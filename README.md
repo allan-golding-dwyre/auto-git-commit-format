@@ -22,3 +22,16 @@ curl -sSL https://raw.githubusercontent.com/allan-golding-dwyre/auto-git-commit-
   ---
   * `help`        Help about any command
   * `completion`  Generate the autocompletion script for the specified shell
+
+
+### Example:
+
+```bash
+
+agcf feat "Adding a feature with a message"
+
+# Also works:
+agcf feat Adding a feature with a message
+```
+
+
