@@ -14,6 +14,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const maxMessageLength = 30
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "agcf",
@@ -62,7 +64,7 @@ func makeCommitCmd(name, emoji, description string) *cobra.Command {
 }
 
 func validateMessage(message string) (string, error) {
-	if len(message) >= 20 {
+	if len(message) >= maxMessageLength {
 		return "", fmt.Errorf("message trop long : %d caractères (max 19)", len(message))
 	}
 	return message, nil

@@ -57,7 +57,7 @@ func TestTypesIconsCommand(t *testing.T) {
 
 func TestValidateMessage(t *testing.T) {
 	t.Run("Message too long", func(t *testing.T) {
-		_, err := validateMessage("123456789012345678901")
+		_, err := validateMessage(strings.Repeat("a", maxMessageLength+1))
 
 		if err == nil {
 			t.Fatalf("Expected error, but got none")
