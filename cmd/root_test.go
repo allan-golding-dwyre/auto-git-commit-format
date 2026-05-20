@@ -2,6 +2,7 @@ package cmd //nolint:package-comments
 
 import (
 	"bytes"
+	"errors"
 	"strings"
 	"testing"
 )
@@ -56,11 +57,44 @@ func TestTypesIconsCommand(t *testing.T) {
 }
 
 func TestValidateMessage(t *testing.T) {
+	t.Run("No message", func(t *testing.T) {
+		_, err := validateMessage("")
+
+		assertError(t, err, ErrNoMessageProvided)
+	})
+
+	t.Run("Only White Space", func(t *testing.T) {
+		_, err := validateMessage("    ")
+
+		assertError(t, err, ErrNoMessageProvided)
+	})
+
 	t.Run("Message too long", func(t *testing.T) {
 		_, err := validateMessage(strings.Repeat("a", maxMessageLength+1))
 
-		if err == nil {
-			t.Fatalf("Expected error, but got none")
+		assertError(t, err, &ErrMessageTooLong{CurrentLength: maxMessageLength + 1})
+	})
+
+	t.Run("Capitalized Letter", func(t *testing.T) {
+		msg, err := validateMessage("test message")
+		want := "Test message"
+
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
+		if msg != want {
+			t.Errorf("Expected message to be %s, got '%s'", want, msg)
 		}
 	})
+}
+
+func assertError(t testing.TB, got, want error) {
+	t.Helper()
+	if got == nil {
+		t.Fatal("didn't get an error but wanted one")
+	}
+
+	if !errors.Is(got, want) {
+		t.Errorf("Expected error of type %q, got %q", want, got)
+	}
 }

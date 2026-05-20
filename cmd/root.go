@@ -5,6 +5,7 @@ Copyright © 2026 Allan Golding Dwyre <allan.golding-dwyre@vidal.fr>
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -63,10 +64,33 @@ func makeCommitCmd(name, emoji, description string) *cobra.Command {
 	}
 }
 
+// ErrNoMessageProvided is returned when the commit message is empty.
+var ErrNoMessageProvided = errors.New("no commit message provided")
+
+// ErrMessageTooLong is returned when the commit message exceeds the maximum allowed length.
+type ErrMessageTooLong struct{ CurrentLength int }
+
+func (e *ErrMessageTooLong) Error() string {
+	return fmt.Sprintf("message too long: %d characters (max %d)", e.CurrentLength, maxMessageLength)
+}
+
+// Is reports whether the target error is an ErrMessageTooLong with the same length.
+func (e *ErrMessageTooLong) Is(target error) bool {
+	_, ok := target.(*ErrMessageTooLong)
+	return ok && e.CurrentLength == target.(*ErrMessageTooLong).CurrentLength
+}
+
 func validateMessage(message string) (string, error) {
-	if len(message) >= maxMessageLength {
-		return "", fmt.Errorf("message trop long : %d caractères (max 19)", len(message))
+	message = strings.TrimSpace(message)
+	if message == "" {
+		return "", ErrNoMessageProvided
 	}
+	if len(message) >= maxMessageLength {
+		return "", &ErrMessageTooLong{CurrentLength: len(message)}
+	}
+
+	message = strings.ToUpper(message[:1]) + message[1:]
+
 	return message, nil
 }
 
