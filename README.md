@@ -2,6 +2,11 @@
 
 Permet de formatter automatiquement un commit vers le type voulu. Il peut aussi permettre d'invalider le commit si il y a trop de caractère, ou si le commit n'est pas en anglais.
 
+## Installation:
+
+``` sh
+curl -sSL https://raw.githubusercontent.com/allan-golding-dwyre/auto-git-commit-format/main/install.sh | bash
+```
 
 ## Usage:
   agcf [command]
