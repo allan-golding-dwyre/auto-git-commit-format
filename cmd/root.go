@@ -42,7 +42,8 @@ func init() {
         makeCommitCmd("remove",   "🔥", "Suppression de code"),
         makeCommitCmd("docs",     "📝", "Documentation"),
         makeCommitCmd("build",    "🔧", "Build / déploiement"),
-        makeCommitCmd("deps",     "⬆️",  "Mise à jour dépendances"),
+        makeCommitCmd("deps",     "⬆️", "Mise à jour dépendances"),
+        makeCommitCmd("test",     "✅", "Ajout de tests"),
     )
 }
 
