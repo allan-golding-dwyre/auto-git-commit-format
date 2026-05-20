@@ -1,6 +1,5 @@
 /*
-Copyright © 2026 NAME HERE <EMAIL ADDRESS>
-
+Copyright © 2026 Allan Golding Dwyre <allan.golding-dwyre@vidal.fr>
 */
 package main
 
